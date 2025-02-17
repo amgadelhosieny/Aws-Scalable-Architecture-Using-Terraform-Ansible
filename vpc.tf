@@ -183,13 +183,13 @@ resource "aws_network_acl_rule" "public_https" {
   to_port        = 443
 }
 
-resource "aws_network_acl_rule" "public_ephemeral" {
+resource "aws_network_acl_rule" "public_ephemeral_inbound" {
   network_acl_id = aws_network_acl.Main-public_nacl.id
-  rule_number    = 130
+  rule_number    = 140
   protocol       = "tcp"
   rule_action    = "allow"
   egress         = false
-  cidr_block     = aws_vpc.mainvpc.cidr_block
+  cidr_block     = "0.0.0.0/16"
   from_port      = 1024
   to_port        = 65535
 }

@@ -93,6 +93,13 @@ resource "aws_security_group" "main-Front-LB-SG" {
         protocol    = "tcp"
         security_groups = [aws_security_group.main-Nginx-A-SG.id , aws_security_group.main-Nginx-B-SG.id]
 }
+    egress {
+        from_port   = 0
+        to_port     = 0
+        protocol    = "-1"
+        cidr_blocks = ["0.0.0.0/0"]
+}
+
     tags = {
         Name = "main-front-LB-SG"
     }

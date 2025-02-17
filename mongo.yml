@@ -1,0 +1,100 @@
+- name: Install and Configure MongoDB Replica Set
+  hosts: mongodb
+  become: true
+  vars:
+    mongo_version: "8.0"
+    mongo_replset: "rs0"
+
+  tasks:
+    - name: Update system packages
+      apt:
+        update_cache: yes
+
+    - name: Install dependencies
+      apt:
+        name:
+          - gnupg
+          - curl
+        state: present
+
+    - name: Get Ubuntu Codename
+      command: lsb_release -cs
+      register: ubuntu_codename
+      changed_when: false
+
+    - name: Add MongoDB GPG key
+      shell: |
+        curl -fsSL https://www.mongodb.org/static/pgp/server-{{ mongo_version }}.asc | sudo apt-key add -
+      args:
+        executable: /bin/bash
+
+    - name: Add MongoDB repository
+      shell: |
+        echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu {{ ubuntu_codename.stdout }}/mongodb-org/{{ mongo_version }} multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-{{ mongo_version }}.list
+      args:
+        executable: /bin/bash
+
+    - name: Update package lists again
+      apt:
+        update_cache: yes
+
+    - name: Install MongoDB and tools
+      apt:
+        name:
+          - mongodb-org
+          - mongodb-org-shell  # Ensures `mongo` shell is available
+        state: present
+
+    - name: Enable and start MongoDB service
+      systemd:
+        name: mongod
+        enabled: yes
+        state: started
+        daemon_reload: yes
+
+    - name: Configure MongoDB for replication
+      copy:
+        dest: /etc/mongod.conf
+        content: |
+          storage:
+            dbPath: /var/lib/mongodb
+          systemLog:
+            destination: file
+            path: /var/log/mongodb/mongod.log
+            logAppend: true
+          net:
+            bindIp: 0.0.0.0
+            port: 27017
+          replication:
+            replSetName: "{{ mongo_replset }}"
+      notify:
+        - Restart MongoDB
+
+    - name: Wait for MongoDB to restart
+      pause:
+        seconds: 10
+
+    - name: Check if replica set is already initialized
+      command: mongosh --eval "rs.status().ok"
+      register: rs_status
+      ignore_errors: true
+      when: inventory_hostname == "mongo1"
+
+    - name: Initialize Replica Set (Only on Primary, if not already initialized)
+      command: >
+        mongosh --eval 'rs.initiate({
+          _id: "{{ mongo_replset }}",
+          members: [
+            { _id: 0, host: "mongo1:27017" },
+            { _id: 1, host: "mongo2:27017" },
+            { _id: 2, host: "mongo3:27017" }
+          ]
+        })'
+      when: inventory_hostname == "mongo1" and rs_status.rc != 0
+
+  handlers:
+    - name: Restart MongoDB
+      systemd:
+        name: mongod
+        state: restarted
+        daemon_reload: yes

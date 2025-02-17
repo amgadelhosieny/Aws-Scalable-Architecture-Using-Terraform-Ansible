@@ -2,6 +2,7 @@ resource "aws_instance" "main-Bastion-host" {
     ami = "ami-0fc5d935ebf8bc3bc"
     instance_type = "t3.medium"
     subnet_id = aws_subnet.main-publicsubnet-A.id
+    associate_public_ip_address = true 
     key_name = "ansible-test"
     security_groups = [aws_security_group.main-bastion-SG.id]
     tags = {
@@ -15,6 +16,7 @@ resource "aws_instance" "main-Nginx-A" {
     ami = "ami-0fc5d935ebf8bc3bc"
     instance_type = "t3.medium"
     subnet_id = aws_subnet.main-publicsubnet-A.id
+    associate_public_ip_address = true     
     key_name = "ansible-test"
     security_groups = [aws_security_group.main-Nginx-A-SG.id]
     depends_on = [ aws_security_group.main-Nginx-A-SG ]
@@ -28,6 +30,7 @@ resource "aws_instance" "main-Nginx-B" {
     ami = "ami-0fc5d935ebf8bc3bc"
     instance_type = "t3.medium"
     subnet_id = aws_subnet.main-publicsubnet-B.id
+    associate_public_ip_address = true 
     key_name = "ansible-test"
     security_groups = [aws_security_group.main-Nginx-B-SG.id]
     depends_on = [ aws_security_group.main-Nginx-B-SG ]

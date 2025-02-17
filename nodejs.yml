@@ -1,0 +1,72 @@
+- name: Install Node.js and Set Up Express.js App
+  hosts: nodejs
+  become: true
+
+  tasks:
+    - name: Update and upgrade system packages
+      apt:
+        update_cache: yes
+        upgrade: yes
+
+    - name: Add Node.js 20.x repository
+      shell: curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+      args:
+        executable: /bin/bash
+
+    - name: Install Node.js
+      apt:
+        name: nodejs
+        state: present
+
+    - name: Verify Node.js installation
+      command: node -v
+      register: node_version
+      changed_when: false
+
+    - name: Display Node.js version
+      debug:
+        msg: "Installed Node.js version: {{ node_version.stdout }}"
+
+    - name: Create application directory
+      file:
+        path: /home/ubuntu/app
+        state: directory
+        owner: ubuntu
+        group: ubuntu
+        mode: '0755'
+
+    - name: Initialize a Node.js project
+      command: npm init -y
+      args:
+        chdir: /home/ubuntu/app
+      become_user: ubuntu
+
+    - name: Install Express.js
+      command: npm install express
+      args:
+        chdir: /home/ubuntu/app
+      become_user: ubuntu
+
+    - name: Create server.js
+      copy:
+        dest: /home/ubuntu/app/server.js
+        content: |
+          const express = require('express');
+          const app = express();
+
+          // Define the port (default: 3000)
+          const PORT = process.env.PORT || 3000;
+
+          // Define a simple route
+          app.get('/health', (req, res) => {
+              res.send('Hello, Express.js is running!');
+          });
+
+          // Start the server
+          app.listen(PORT, () => {
+              console.log(`Server is running on http://localhost:${PORT}`);
+          });
+
+    - name: Provide execution feedback
+      debug:
+        msg: "Setup complete. To run the server, navigate to /home/ubuntu/app and run: node server.js"
