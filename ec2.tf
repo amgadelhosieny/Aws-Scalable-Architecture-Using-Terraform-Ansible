@@ -20,7 +20,6 @@ resource "aws_instance" "main-Nginx-A" {
     key_name = "ansible-test"
     security_groups = [aws_security_group.main-Nginx-A-SG.id]
     depends_on = [ aws_security_group.main-Nginx-A-SG ]
-    user_data = file("nginx.sh")
     tags = {
         Name = "main-Nginx-A-host"
     }
@@ -34,7 +33,6 @@ resource "aws_instance" "main-Nginx-B" {
     key_name = "ansible-test"
     security_groups = [aws_security_group.main-Nginx-B-SG.id]
     depends_on = [ aws_security_group.main-Nginx-B-SG ]
-    user_data = file("nginx.sh")
     tags = {
         Name = "main-Nginx-B-host"
     }
@@ -49,7 +47,6 @@ resource "aws_instance" "main-Nodejs-A" {
     key_name = "ansible-test"
     security_groups = [aws_security_group.main-Nodejs-SG.id]
     depends_on = [ aws_security_group.main-Nodejs-SG ] 
-    user_data = file("nodejs.sh")
     tags = {
         Name = "main-Nodejs-A-host"
     }
@@ -62,7 +59,6 @@ resource "aws_instance" "main-Nodejs-B" {
     key_name = "ansible-test"
     security_groups = [aws_security_group.main-Nodejs-SG.id ]
     depends_on = [ aws_security_group.main-Nodejs-SG ]
-    user_data = file("nodejs.sh")
     tags = {
         Name = "main-Nodejs-B-host"
     }
@@ -77,7 +73,6 @@ resource "aws_instance" "main-Mongo-Prim-A" {
     key_name = "ansible-test"
     security_groups = [aws_security_group.main-Mongo-SG.id]
     depends_on = [ aws_security_group.main-Mongo-SG ]
-    user_data = file("mongo.sh")
     tags = {
         Name = "main-Mongo-Prim-A-host"
     }
@@ -90,7 +85,6 @@ resource "aws_instance" "main-Mongo-Sec-A" {
     key_name = "ansible-test"
     security_groups = [aws_security_group.main-Mongo-SG.id]
     depends_on = [ aws_security_group.main-Mongo-SG]
-    user_data = file("mongo.sh")
     tags = {
         Name = "main-Mongo-Sec-A-host"
     }
@@ -103,7 +97,6 @@ resource "aws_instance" "main-Mongo-Sec-B" {
     key_name = "ansible-test"
     security_groups = [aws_security_group.main-Mongo-SG.id]
     depends_on = [ aws_security_group.main-Mongo-SG]
-    user_data = file("mongo.sh")
     tags = {
         Name = "main-Mongo-Sec-B-host"
     }
