@@ -44,8 +44,7 @@ Ensure you have the following installed:
 
 1️⃣ **Clone the Repository**
 ```sh
-git clone https://github.com/your-repo/aws-infra.git
-cd aws-infra
+git clone https://github.com/amgadelhosieny/Aws-Scalable-Architecture-Using-Terraform-Ansible.git
 ```
 
 2️⃣ **Initialize Terraform**
