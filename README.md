@@ -2,11 +2,12 @@
 
 ## 📌 Project Overview
 This project provisions a **highly available** AWS infrastructure using Terraform. It deploys the following resources:
-- **Bastion Host**: Secure SSH access point.
-- **Nginx Load Balancers**: Frontend and Backend.
-- **Node.js Application Servers**: Running in private subnets.
+- **Bastion Host**: Provides SSH access to private instances.
+- **Frontend Load Balancer**: Distributes traffic to Nginx instances.
+- **Backend Load Balancer**: Routes traffic to Node.js instances.
+- **Security Groups**: Restrict access as per best security practices.
 - **MongoDB Cluster**: Secure database instances.
-- **Security Groups**: Defined for controlled access between resources.
+
 
 ---
 
@@ -15,12 +16,6 @@ This project provisions a **highly available** AWS infrastructure using Terrafor
 ![image](https://github.com/user-attachments/assets/640ae867-f0b8-4621-a5ac-8fe242f689aa)
 
 
-
-
-- **Bastion Host**: Provides SSH access to private instances.
-- **Frontend Load Balancer**: Distributes traffic to Nginx instances.
-- **Backend Load Balancer**: Routes traffic to Node.js instances.
-- **Security Groups**: Restrict access as per best security practices.
 
 ---
 
