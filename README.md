@@ -67,6 +67,26 @@ terraform apply -auto-approve
 ssh -i your-key.pem ec2-user@<BASTION-HOST-IP>
 ```
 
+🛠️ Configuration Management with Ansible
+After provisioning the infrastructure using Terraform, Ansible automates the installation and configuration of the required software on the servers.
+
+📜 Ansible Playbooks in this Project:
+Nginx Playbook: Installs and configures Nginx on frontend servers.
+Node.js Playbook: Sets up Node.js and deploys the backend application.
+MongoDB Playbook: Configures and secures MongoDB instances.
+⚡ Running Ansible Playbooks
+Once Terraform completes provisioning, update the Ansible inventory with the generated EC2 instance IPs and run:
+
+sh
+Copy
+Edit
+ansible-playbook -i inventory nginx-setup.yml
+ansible-playbook -i inventory nodejs-setup.yml
+ansible-playbook -i inventory mongodb-setup.yml
+This ensures that all servers are properly configured without manual intervention. ✅
+
+
+
 ---
 
 ## 🛠️ Best Practices Implemented
