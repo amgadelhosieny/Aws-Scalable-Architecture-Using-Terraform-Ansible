@@ -43,6 +43,7 @@ This project provisions a **highly available** AWS infrastructure using Terrafor
 Ensure you have the following installed:
 - [Terraform](https://developer.hashicorp.com/terraform/downloads)
 - AWS CLI configured with proper credentials
+- Ansible
 
 ### Steps to Deploy
 
