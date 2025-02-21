@@ -110,5 +110,3 @@ This ensures that all servers are properly configured without manual interventio
 ## 🎯 Author  
 **Amgad Elhosieny**  
 
-🔥 **Deploy and manage your AWS Infrastructure efficiently with Terraform & Ansible!** 🚀  
-
