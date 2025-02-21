@@ -62,7 +62,7 @@ terraform apply -auto-approve
 
 5️⃣ **Access the Infrastructure**  
 ```sh
-ssh -i your-key.pem ec2-user@<BASTION-HOST-IP>
+ssh -i your-key.pem ubuntu@<BASTION-HOST-IP>
 ```  
 
 ---
@@ -81,9 +81,9 @@ After provisioning the infrastructure using Terraform, **Ansible** automates the
 Once Terraform completes provisioning, update the Ansible inventory with the generated EC2 instance IPs and run:  
 
 ```sh
-ansible-playbook -i inventory nginx-setup.yml
-ansible-playbook -i inventory nodejs-setup.yml
-ansible-playbook -i inventory mongodb-setup.yml
+ansible-playbook -i inventory nginx.yml
+ansible-playbook -i inventory nodejs.yml
+ansible-playbook -i inventory mongodb.yml
 ```  
 
 This ensures that all servers are properly configured without manual intervention. ✅  
